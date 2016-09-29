@@ -37,10 +37,15 @@ namespace WPFClient
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            double montantAAjouter = (double)MontantAAjouterAuCompte.Value;
-            montantAAjouter += _customer.AccountBalance;
-            _customer.AccountBalance = montantAAjouter;
-            _context.SaveChanges();
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                double montantAAjouter = (double)MontantAAjouterAuCompte.Value;
+                montantAAjouter += _customer.AccountBalance;
+                _customer.AccountBalance = montantAAjouter;
+                _context.SaveChanges();
+
+                transaction.Commit();
+            }
 
         }
     }
