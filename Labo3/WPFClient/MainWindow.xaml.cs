@@ -39,9 +39,7 @@ namespace WPFClient
         {
             using (var transaction = _context.Database.BeginTransaction())
             {
-                double montantAAjouter = (double)MontantAAjouterAuCompte.Value;
-                montantAAjouter += _customer.AccountBalance;
-                _customer.AccountBalance = montantAAjouter;
+                _customer.AccountBalance = _customer.AccountBalance + (double)MontantAAjouterAuCompte.Value;
                 _context.SaveChanges();
 
                 transaction.Commit();

@@ -26,6 +26,7 @@ namespace DbCustomersLibrary.tests
                 Assert.AreEqual(1, context.Customers.ToList().Count);
             }
         }
+
         private CompanyContext GetContext()
         {
             return new CompanyContext();

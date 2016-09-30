@@ -42,7 +42,7 @@
             <TextBlock Grid.Row="6" Grid.Column="0" Text="Remarque"></TextBlock>
             <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Remark}"></TextBlock>
             <TextBlock Grid.Row="7" Grid.Column="0" Text="Solde actuel"></TextBlock>
-            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding AccountBalance, StringFormat={}{0:C}}"></TextBlock>
+            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding AccountBalance, StringFormat={}{0:C}, Mode=TwoWay}"></TextBlock>
             <TextBlock Grid.Row="8" Grid.Column="0" Text="Ajouter au compte"></TextBlock>
             <xceed:DoubleUpDown Grid.Row="8" Grid.Column="1" x:Name="MontantAAjouterAuCompte" Minimum="0.00" Maximum="1000000" Value="0"></xceed:DoubleUpDown>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="9" Grid.ColumnSpan="2">
