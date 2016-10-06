@@ -1,6 +1,7 @@
 ﻿using DbCustomersLibrary;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,9 +41,26 @@ namespace WPFClient
             using (var transaction = _context.Database.BeginTransaction())
             {
                 _customer.AccountBalance = _customer.AccountBalance + (double)MontantAAjouterAuCompte.Value;
-                _context.SaveChanges();
 
-                transaction.Commit();
+                try {
+                    _context.SaveChanges();
+                    transaction.Commit();
+                }
+                catch(DbUpdateConcurrencyException dbUpdConExp)
+                {
+                    MessageBox.Show(
+                        "Erreur de mise à jour. Les données que vous tentez de modifier ont déjà été mises à jour par un autre utilisateur.",
+                        "ERREUR",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
+
+                    var currentValues = dbUpdConExp.Entries.Single().GetDatabaseValues();
+
+
+                    transaction.Rollback();
+                }
+
             }
 
         }

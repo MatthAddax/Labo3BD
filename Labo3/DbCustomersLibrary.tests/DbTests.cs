@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 
 namespace DbCustomersLibrary.tests
 {
@@ -33,22 +34,26 @@ namespace DbCustomersLibrary.tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(DbUpdateConcurrencyException))]
         public void AddFromDifferentSources()
         {
-            using (var context = GetContext())
+            using (var context1 = GetContext())
             {
-                var customer = context.Customers.ToList().First();
-                double actualBalance = customer.AccountBalance;
-                double addFirst = 15.21;
-                double addSecond = 10;
+                using (var context2 = GetContext()) { 
 
-                customer.AccountBalance = actualBalance + addFirst;
-                context.SaveChanges();
-                customer.AccountBalance = actualBalance + addSecond;
-                context.SaveChanges();
+                    var customer1 = context1.Customers.ToList().First();
+                    var customer2 = context2.Customers.ToList().First();
 
-                Assert.AreEqual(10, context.Customers.ToList().First().AccountBalance);
+                    customer1.AccountBalance = 20;
+                    context1.SaveChanges();
+
+                    customer2.AccountBalance = 36;
+                    context2.SaveChanges();
+                }
             }
+                
+
         }
+
     }
 }
